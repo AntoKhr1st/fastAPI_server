@@ -106,25 +106,3 @@ class MongoDBManager:
         #     return False
 
 
-# Пример использования:
-if __name__ == "__main__":
-    import asyncio
-
-
-    async def main():
-        manager = MongoDBManager("mongodb://localhost:27017", "users", "users")
-
-        user_id = "user123"
-        new_notification = Notification(key=NotificationKeyEnum.new_message, data={"message": "Hello!1"})
-
-        # await manager.add_notification(user_id, new_notification)
-
-        updated_data = {"message": "Updated message!"}
-        notification_id = new_notification.id
-        print(new_notification)
-        await manager.update_notification(user_id, notification_id, updated_data)
-
-        manager.close_connection()
-
-
-    asyncio.run(main())
