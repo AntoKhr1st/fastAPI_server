@@ -59,12 +59,6 @@ class MongoDBManager:
             update
         )
 
-    async def update_notification(self, user_id: str, notification_id: str, updated_data: dict):
-        await self.collection.update_one(
-            {"id": user_id, "notifications.id": notification_id},
-            {"$set": {"notifications.$.data": updated_data}}
-        )
-
     def close_connection(self):
         self.client.close()
 
