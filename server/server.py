@@ -21,17 +21,14 @@ app = FastAPI(title="Notifications database",
                   "name": "Anton Khr",
                   "email": "antokhrist@gmail.com",
               }, )
-# load_dotenv()
 
 
 # Подключение к контейнеру MongoDB
 
-# DB_URI = os.environ.get("DB_URI")
-# mongo_client = AsyncIOMotorClient(DB_URI)
-# mongo_client = AsyncIOMotorClient("mongodb://mongodb_container:27017")
-# db = mongo_client.get_database('users')
-# users_collection = db.get_collection("notifications")
-manager = MongoDBManager("mongodb://localhost:27017", "users", "users")
+DB_URI = os.environ.get("DB_URI")
+
+
+manager = MongoDBManager(DB_URI, "users", "users")
 
 
 @app.post("/create", response_model=dict)
@@ -48,7 +45,7 @@ async def create_notification(request: Request):
 
     # отправляем сообщение на почту пользователя использует переменную окружения EMAIL
 
-    # send_email(notification["key"], os.environ.get("EMAIL"))
+    send_email(notification.key.value, os.environ.get("EMAIL"))
 
     return JSONResponse(content={"success": True}, status_code=201)
 

@@ -94,15 +94,14 @@ class MongoDBManager:
 
     async def mark_notification_as_read(self, user_id: str, notification_id: str):
         document_id = ObjectId(user_id)
-        filter_ = {"_id": document_id, "id": notification_id}
-        update = {"$set": {"is_new": False}}
-        result = await self.collection.update_one(filter_, update)
+        result = await self.collection.update_one(
+            {"_id": document_id, "notifications.id": notification_id},
+            {"$set": {"notifications.$.is_new": False}}
+        )
 
-        return True
-
-        # if result.modified_count == 1:
-        #     return True
-        # else:
-        #     return False
-
-
+        if result.matched_count > 0:
+            print("Уведомление успешно обновлено")
+            return True
+        else:
+            print("Уведомление не найдено или не было обновлено")
+            return False
